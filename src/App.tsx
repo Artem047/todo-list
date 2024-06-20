@@ -9,7 +9,7 @@ const App = () => {
   const [todo, setTodo] = useState<ITodo[]>([]);
   const [inputTitle, setInputTitle] = useState<string>("");
   const [inputDescription, setInputDescription] = useState<string>("");
-  const [showTodo, setShowTodo] = useState<boolean>(false);
+  const [showTodo, setShowTodo] = useState<number | null>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -39,10 +39,13 @@ const App = () => {
   function deleteTodo(id: number) {
     const newTodo = todo.filter((item) => item.id !== id);
     setTodo(newTodo);
+    if (showTodo === id) {
+      setShowTodo(null);
+    }
   }
 
-  const showModalTodo = () => {
-    setShowTodo(!showTodo);
+  const showModalTodo = (id: number) => {
+    setShowTodo(showTodo === id ? null : id);
   }
 
   return (
@@ -70,7 +73,7 @@ const App = () => {
           <CiSquarePlus size={110} color="#FF8303" />
         </Button>
       </form>
-      <TodoList todo={todo} showModalTodo={showModalTodo} showTodo={showTodo} />
+      <TodoList todo={todo} showModalTodo={showModalTodo} showTodo={showTodo} deleteTodo={deleteTodo} />
     </div>
   );
 };
