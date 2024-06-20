@@ -8,7 +8,7 @@ type IProps = {
   showEditModal: (id: number) => void;
   showTodo: number | null;
   editTodo: number | null;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   editTodoItem: (id: number, title: string, description: string) => void;
   editTitle: string;
   editDescription: string;

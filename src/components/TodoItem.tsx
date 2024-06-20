@@ -2,7 +2,8 @@ import Button from "./Button";
 import { ITodo } from "../interface/todo";
 import OptionsTask from "./OptionsTask";
 import { AiOutlinePlusCircle, AiOutlineCloseCircle } from "react-icons/ai";
-import EditModal from "./EditModal";
+import EditModal from "./modals/EditModal";
+import TruncateText from "./TruncateText";
 
 type IProps = {
   item: ITodo;
@@ -11,7 +12,7 @@ type IProps = {
   showEditModal: (id: number) => void;
   isOpenTodo: boolean;
   isOpenEditTodo: boolean;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   editTodo: (id: number, title: string, description: string) => void;
   editTitle: string;
   editDescription: string;
@@ -27,14 +28,16 @@ const TodoItem = ({
   handleChange,
   editTodo,
   editTitle,
-  editDescription
+  editDescription,
 }: IProps) => {
   return (
     <div className="flex flex-col w-full max-w-[345px] relative">
       <div className=" border-2 border-[#A35709] p-4 rounded-lg flex justify-between items-center">
         <div>
-          <p className="text-2xl text-[#F0E3CA]">{item.title}</p>
-          <span className="text-xl text-[#F0E3CA]">{item.description}</span>
+          <p className="text-2xl text-[#F0E3CA]">
+            <TruncateText text={item.title} num={15} />
+          </p>
+          <span className="text-xl text-[#F0E3CA]"><TruncateText text={item.description} num={20} /></span>
         </div>
         <div>
           <Button onClick={() => showModalTodo(item.id)}>

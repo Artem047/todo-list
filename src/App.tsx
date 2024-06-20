@@ -14,7 +14,7 @@ const App = () => {
   const [editTitle, setEditTitle] = useState<string>("");
   const [editDescription, setEditDescription] = useState<string>("");
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     switch (name) {
       case "title":
@@ -78,6 +78,8 @@ const App = () => {
     setTodo(newTodo);
     setEditModal(null);
   }
+
+  
 
   return (
     <div className="w-full h-screen flex flex-col items-center">
