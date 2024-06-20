@@ -10,6 +10,9 @@ const App = () => {
   const [inputTitle, setInputTitle] = useState<string>("");
   const [inputDescription, setInputDescription] = useState<string>("");
   const [showTodo, setShowTodo] = useState<number | null>(null);
+  const [editModal, setEditModal] = useState<number | null>(null);
+  const [editTitle, setEditTitle] = useState<string>("");
+  const [editDescription, setEditDescription] = useState<string>("");
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -20,6 +23,12 @@ const App = () => {
       case "description":
         setInputDescription(value);
         break;
+      case "editTitle":
+        setEditTitle(value);
+        break;
+      case "editDescription":
+        setEditDescription(value);
+        break;
       default:
         break;
     }
@@ -27,7 +36,8 @@ const App = () => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (inputTitle === "" || inputDescription === "") return alert('Заполните все поля!!!')
+    if (inputTitle === "" || inputDescription === "")
+      return alert("Заполните все поля!!!");
     setTodo([
       ...todo,
       { id: todo.length, title: inputTitle, description: inputDescription },
@@ -44,8 +54,29 @@ const App = () => {
     }
   }
 
+  const showEditModal = (id: number) => {
+    if (editModal === id) {
+      setEditModal(null);
+    } else {
+      const todoItem = todo.find((item) => item.id === id);
+      if (todoItem) {
+        setEditTitle(todoItem.title);
+        setEditDescription(todoItem.description);
+      }
+      setEditModal(id);
+    }
+  };
+
   const showModalTodo = (id: number) => {
     setShowTodo(showTodo === id ? null : id);
+  };
+
+  function editTodoItem(id: number, title: string, description: string) {
+    const newTodo = todo.map((item) =>
+      item.id === id ? { ...item, title, description } : item
+    );
+    setTodo(newTodo);
+    setEditModal(null);
   }
 
   return (
@@ -73,7 +104,18 @@ const App = () => {
           <CiSquarePlus size={110} color="#FF8303" />
         </Button>
       </form>
-      <TodoList todo={todo} showModalTodo={showModalTodo} showTodo={showTodo} deleteTodo={deleteTodo} />
+      <TodoList
+        todo={todo}
+        showModalTodo={showModalTodo}
+        showTodo={showTodo}
+        deleteTodo={deleteTodo}
+        editTodo={editModal}
+        showEditModal={showEditModal}
+        handleChange={handleChange}
+        editTodoItem={editTodoItem}
+        editTitle={editTitle}
+        editDescription={editDescription}
+      />
     </div>
   );
 };

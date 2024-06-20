@@ -5,10 +5,27 @@ type IProps = {
   todo: ITodo[];
   deleteTodo: (id: number) => void;
   showModalTodo: (id: number) => void;
+  showEditModal: (id: number) => void;
   showTodo: number | null;
+  editTodo: number | null;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  editTodoItem: (id: number, title: string, description: string) => void;
+  editTitle: string;
+  editDescription: string;
 };
 
-const TodoList = ({ todo, showModalTodo, showTodo, deleteTodo }: IProps) => {
+const TodoList = ({
+  todo,
+  showModalTodo,
+  showTodo,
+  deleteTodo,
+  editTodo,
+  showEditModal,
+  handleChange,
+  editTodoItem,
+  editTitle,
+  editDescription
+}: IProps) => {
   return (
     <ul className="w-full flex justify-center">
       {todo.length > 0 ? (
@@ -18,9 +35,15 @@ const TodoList = ({ todo, showModalTodo, showTodo, deleteTodo }: IProps) => {
               <TodoItem
                 key={item.id}
                 item={item}
-                isOpen={showTodo === item.id}
+                isOpenTodo={showTodo === item.id}
+                isOpenEditTodo={editTodo === item.id}
+                showEditModal={showEditModal}
                 showModalTodo={showModalTodo}
                 deleteTodo={deleteTodo}
+                handleChange={handleChange}
+                editTodo={editTodoItem}
+                editTitle={editTitle}
+                editDescription={editDescription}
               />
             );
           })}
