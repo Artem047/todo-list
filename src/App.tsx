@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { CiSquarePlus } from "react-icons/ci";
-import { AiOutlineCloseSquare } from "react-icons/ai";
-
-interface ITodos {
-  id: number;
-  title: string;
-  description: string;
-}
+import { ITodo } from "./interface/todo";
+import Input from "./components/Input";
+import Button from "./components/Button";
+import TodoList from "./components/TodoList";
 
 const App = () => {
-  const [todo, setTodo] = useState<ITodos[]>([]);
+  const [todo, setTodo] = useState<ITodo[]>([]);
   const [inputTitle, setInputTitle] = useState<string>("");
   const [inputDescription, setInputDescription] = useState<string>("");
 
@@ -29,6 +26,7 @@ const App = () => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (inputTitle === "" || inputDescription === "") return;
     setTodo([
       ...todo,
       { id: todo.length, title: inputTitle, description: inputDescription },
@@ -38,16 +36,15 @@ const App = () => {
   }
 
   function deleteTodo(id: number) {
-    const newTodo = [...todo];
-    newTodo.splice(id, 1);
+    const newTodo = todo.filter((item) => item.id !== id);
     setTodo(newTodo);
   }
 
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center">
+    <div className="w-full h-screen flex flex-col items-center">
       <form onSubmit={handleSubmit} className="flex items-center">
-        <div className="flex flex-col">
-          <input
+        <div className="flex flex-col gap-2">
+          <Input
             name="title"
             type="text"
             value={inputTitle}
@@ -55,7 +52,7 @@ const App = () => {
             className="w-[300px] text-[#F0E3CA] border-[#FF8303] border rounded py-2 px-4 outline-none"
             placeholder="Title..."
           />
-          <input
+          <Input
             name="description"
             type="text"
             value={inputDescription}
@@ -64,40 +61,11 @@ const App = () => {
             placeholder="Description..."
           />
         </div>
-        <button type="submit">
+        <Button type="submit">
           <CiSquarePlus size={110} color="#FF8303" />
-        </button>
+        </Button>
       </form>
-      <ul className="w-full flex justify-center">
-        {todo.length > 0 ? (
-          <>
-            {todo.map((todo) => {
-              return (
-                <li
-                  key={todo.id}
-                  className="w-full max-w-[345px] border-2 border-[#A35709] p-4 rounded-lg flex justify-between"
-                >
-                  <div>
-                    <p className="text-2xl text-[#F0E3CA]">{todo.title}</p>
-                    <span className="text-xl text-[#F0E3CA]">
-                      {todo.description}
-                    </span>
-                  </div>
-                  <button onClick={() => deleteTodo(todo.id)}>
-                    <AiOutlineCloseSquare size={40} color="#A35709" />
-                  </button>
-                </li>
-              );
-            })}
-          </>
-        ) : (
-          <div>
-            <p className="text-white text-2xl border-t-2 border-b-2 border-[#FF8303] py-3">
-              No task
-            </p>
-          </div>
-        )}
-      </ul>
+      <TodoList todo={todo} deleteTodo={deleteTodo} />
     </div>
   );
 };
