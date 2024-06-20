@@ -3,17 +3,19 @@ import TodoItem from "./TodoItem";
 
 type IProps = {
     todo: ITodo[];
-    deleteTodo: (id: number) => void;
+    // deleteTodo: (id: number) => void;
+    showModalTodo: () => void;
+    showTodo: boolean;
 }
 
-const TodoList = ({ todo, deleteTodo }: IProps) => {
+const TodoList = ({ todo, showModalTodo, showTodo}: IProps) => {
   return (
     <ul className="w-full flex justify-center">
       {todo.length > 0 ? (
         <>
           {todo.map((item) => {
             return (
-              <TodoItem item={item} deleteTodo={deleteTodo} />
+              <TodoItem item={item} showModalTodo={showModalTodo} showTodo={showTodo} />
             );
           })}
         </>

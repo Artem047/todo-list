@@ -9,6 +9,7 @@ const App = () => {
   const [todo, setTodo] = useState<ITodo[]>([]);
   const [inputTitle, setInputTitle] = useState<string>("");
   const [inputDescription, setInputDescription] = useState<string>("");
+  const [showTodo, setShowTodo] = useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -26,7 +27,7 @@ const App = () => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (inputTitle === "" || inputDescription === "") return;
+    if (inputTitle === "" || inputDescription === "") return alert('Заполните все поля!!!')
     setTodo([
       ...todo,
       { id: todo.length, title: inputTitle, description: inputDescription },
@@ -38,6 +39,10 @@ const App = () => {
   function deleteTodo(id: number) {
     const newTodo = todo.filter((item) => item.id !== id);
     setTodo(newTodo);
+  }
+
+  const showModalTodo = () => {
+    setShowTodo(!showTodo);
   }
 
   return (
@@ -65,7 +70,7 @@ const App = () => {
           <CiSquarePlus size={110} color="#FF8303" />
         </Button>
       </form>
-      <TodoList todo={todo} deleteTodo={deleteTodo} />
+      <TodoList todo={todo} showModalTodo={showModalTodo} showTodo={showTodo} />
     </div>
   );
 };

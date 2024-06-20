@@ -1,25 +1,44 @@
-import { AiOutlineCloseSquare } from "react-icons/ai";
 import Button from "./Button";
 import { ITodo } from "../interface/todo";
+import OptionsTask from "./OptionsTask";
+import { AiOutlinePlusCircle, AiOutlineCloseCircle } from "react-icons/ai";
+
 
 type IProps = {
   item: ITodo;
-  deleteTodo: (id: number) => void;
+  // deleteTodo: (id: number) => void;
+  showModalTodo: () => void;
+  showTodo: boolean;
 };
 
-const TodoItem = ({ deleteTodo, item }: IProps) => {
+const TodoItem = ({ showModalTodo, item, showTodo }: IProps) => {
   return (
-    <div
-      key={item.id}
-      className="w-full max-w-[345px] border-2 border-[#A35709] p-4 rounded-lg flex justify-between"
-    >
-      <div>
-        <p className="text-2xl text-[#F0E3CA]">{item.title}</p>
-        <span className="text-xl text-[#F0E3CA]">{item.description}</span>
+    <div className="flex flex-col w-full max-w-[345px] relative">
+      <div
+        key={item.id}
+        className=" border-2 border-[#A35709] p-4 rounded-lg flex justify-between items-center"
+      >
+        <div>
+          <p className="text-2xl text-[#F0E3CA]">{item.title}</p>
+          <span className="text-xl text-[#F0E3CA]">{item.description}</span>
+        </div>
+        <div>
+          {showTodo === true ? (
+            <Button onClick={showModalTodo}>
+              <AiOutlineCloseCircle size={40} color="#A35709" />
+            </Button>
+          ) : (
+            <Button onClick={showModalTodo}>
+              <AiOutlinePlusCircle size={40} color="#A35709" />
+            </Button>
+          )}
+        </div>
       </div>
-      <Button onClick={() => deleteTodo(item.id)}>
-        <AiOutlineCloseSquare size={40} color="#A35709" />
-      </Button>
+      {showTodo === true ? (
+        <div className="flex justify-end mt-2">
+          <OptionsTask />
+        </div>
+      ) : null}
     </div>
   );
 };
